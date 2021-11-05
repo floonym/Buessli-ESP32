@@ -11,7 +11,7 @@
 
 //int LED_BUILTIN = 2;
 #define displayPowerPin 5 //13
-bool displayPower = 5; //1
+bool displayPower = 1;
 
 byte arduinoEnablePin = 5;
 uint32_t tArduinoEnable;
