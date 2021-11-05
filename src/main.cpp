@@ -54,12 +54,14 @@ Component c8b;   //LED After
 Component c8c;   //LED Switch
 Component c10;   //Audio Switch
 
-Component* cAll[12]; //All Components
-Component* cP1[12]; //Components Page1
-Component* cP2[1];  //Components Page2
+Component* cAllVis[12]; //All Components with Buttons
+Component* cAll[16];    //All Components
+Component* cP1[12];     //Components Page1
+Component* cP2[1];      //Components Page2
 
 //********** Groups **********
-Group g0;        //All Shutoff
+Group g0;           //All Shutoff
+Group gall;         //All Components
 
 Group* gAll[1];     //All Groups
 Group* gP1[1];      //Groups Page1  
@@ -127,6 +129,19 @@ void setup() {
   //sP2[0] = &s0;
   
   //********** Component Arrays **********
+  cAllVis[0] = &c1;
+  cAllVis[1] = &c2a;
+  cAllVis[2] = &c3a;
+  cAllVis[3] = &c4a;
+  cAllVis[4] = &c4b;
+  cAllVis[5] = &c4c;
+  cAllVis[6] = &c5;
+  cAllVis[7] = &c6;
+  cAllVis[8] = &c8a;
+  cAllVis[9] = &c8c;
+  cAllVis[10] = &c9a;
+  cAllVis[11] = &c10;
+
   cAll[0] = &c1;
   cAll[1] = &c2a;
   cAll[2] = &c3a;
@@ -139,6 +154,10 @@ void setup() {
   cAll[9] = &c8c;
   cAll[10] = &c9a;
   cAll[11] = &c10;
+  cAll[12] = &c2b;
+  cAll[13] = &c3b;
+  cAll[14] = &c9b;
+  cAll[15] = &c8b;
 
   cP1[0] = &c1;
   cP1[1] = &c2a;
@@ -171,8 +190,13 @@ void setup() {
   p1.setup(1, gP1, 1, cP1, 12, sP1, 3);
   p2.setup(2, gP2, 0, cP2, 0, sP2, 0);
 
-  p1.setupArduinoEnable(&tArduinoEnable, &arduinoEnablePin);
-  p2.setupArduinoEnable(&tArduinoEnable, &arduinoEnablePin);
+  gall.setup("b999", 0, cAll, 16);
+  g0.setup("b116", 0, cAllVis, 12);
+
+  //p1.setupArduinoEnable(&tArduinoEnable, &arduinoEnablePin);
+  //p2.setupArduinoEnable(&tArduinoEnable, &arduinoEnablePin);
+
+  gall.setupArduinoEnable(&tArduinoEnable, &arduinoEnablePin);
 
   p1.setVisibility(1);
 
@@ -201,8 +225,6 @@ void setup() {
   c4b.setupSecondC(&c4c, 1, 0);
   c4c.setupSecondC(&c4b, 1, 0);
 
-
-  g0.setup("b116", 0, cAll, 12);
 
   s0.setup("x0", "14", 1, 0, &tArduinoEnable, &arduinoEnablePin);
   s1.setup("x1", "15", 1, 0, &tArduinoEnable, &arduinoEnablePin);

@@ -119,6 +119,12 @@ public:
     }
   }
 
+  void setupArduinoEnable(uint32_t* tArduinoEnableInIn, byte* arduinoEnablePinInIn) {
+    for(int w=0; w<len; w++) {
+      coms[w]->setupArduino(tArduinoEnableInIn,arduinoEnablePinInIn);
+    }
+  }
+
   
 };
 
