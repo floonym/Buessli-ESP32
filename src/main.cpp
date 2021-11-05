@@ -171,6 +171,9 @@ void setup() {
   p1.setup(1, gP1, 1, cP1, 12, sP1, 3);
   p2.setup(2, gP2, 0, cP2, 0, sP2, 0);
 
+  p1.setupArduinoEnable(&tArduinoEnable, &arduinoEnablePin);
+  p2.setupArduinoEnable(&tArduinoEnable, &arduinoEnablePin);
+
   p1.setVisibility(1);
 
   c1.setup("b100", "005", 0);
@@ -198,8 +201,6 @@ void setup() {
   c4b.setupSecondC(&c4c, 1, 0);
   c4c.setupSecondC(&c4b, 1, 0);
 
-  p1.setupArduinoEnable(&tArduinoEnable, &arduinoEnablePin);
-  p2.setupArduinoEnable(&tArduinoEnable, &arduinoEnablePin);
 
   g0.setup("b116", 0, cAll, 12);
 
