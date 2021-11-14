@@ -10,7 +10,7 @@
 
 
 //int LED_BUILTIN = 2;
-#define displayPowerPin 5 //13
+#define displayPowerPin 13 //13
 bool displayPower = 1;
 
 byte arduinoEnablePin = 5;
@@ -172,14 +172,15 @@ void setup() {
   cP1[10] = &c9a;
   cP1[11] = &c10;
 
-  //cP2[0] = &c0;
+  cP2[0] = &c1;
 
   //********** Group Arrays **********
   gAll[0] = &g0;
 
   gP1[0] = &g0;
 
-  //gP2[0] = &g0;
+  gP2[0] = &g0;
+
 
   //********** Page Arrays **********
   pAll[0] = &p1;
@@ -188,7 +189,7 @@ void setup() {
 
   //********** Setups **********
   p1.setup(1, gP1, 1, cP1, 12, sP1, 3);
-  p2.setup(2, gP2, 0, cP2, 0, sP2, 0);
+  p2.setup(2, gP2, 1, cP2, 1, sP2, 0);
 
   gall.setup("b999", 0, cAll, 16);
   g0.setup("b116", 0, cAllVis, 12);
@@ -200,20 +201,20 @@ void setup() {
 
   p1.setVisibility(1);
 
-  c1.setup("b100", "005", 0);
+  c1.setup("b100", "010", 0);
   c2a.setup("b101", "006", 0);
-  c2b.setup("", "010", 0);
+  c2b.setup("b500", "010", 0);
   c3a.setup("b102", "010", 0);
-  c3b.setup("", "010", 0);
+  c3b.setup("b500", "010", 0);
   c4a.setup("b104", "010", 0);
   c4b.setup("b105", "010", 0);
   c4c.setup("b106", "010", 0);
   c5.setup("b108", "010", 0);
   c6.setup("b109", "010", 0);
   c9a.setup("b110", "010", 0);
-  c9b.setup("", "010", 0);
+  c9b.setup("b500", "010", 0);
   c8a.setup("b114", "010", 0);
-  c8b.setup("", "010", 0);
+  c8b.setup("b500", "010", 0);
   c8c.setup("b113", "010", 0);
   c10.setup("b112", "010", 0);
 
@@ -230,7 +231,7 @@ void setup() {
   s1.setup("x1", "15", 1, 0, &tArduinoEnable, &arduinoEnablePin);
   s2.setup("x2", "16", 1, 0, &tArduinoEnable, &arduinoEnablePin);
 
-  t1.setup(T4, 30);
+  t1.setup(T9, 30);
 
 
   //********** Frequency Adjust **********
@@ -267,7 +268,7 @@ void loop() {
 
     }
   }
-
+  
   while(Serial1.available()) {
     x = Serial1.readStringUntil('\n');
     Serial.println(x);
@@ -278,6 +279,7 @@ void loop() {
       }
     }
   }
+  /*
   switch (t1.pressed())
   {
   case 1:
@@ -289,6 +291,7 @@ void loop() {
   default:
     break;
   }
+  */
 
   if (millis()-tArduinoEnable > 5000) {
     digitalWrite(arduinoEnablePin,0);
