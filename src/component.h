@@ -75,7 +75,7 @@ public:
     if(millis()-*tArduinoEnable>5000) { //Waking Arduino if not enabled
       digitalWrite(*arduinoEnablePin,1);
       digitalWrite(LED_BUILTIN,1);
-      delay(100);
+      delay(500);
     }
     *tArduinoEnable = millis();
     Serial1.println(out);
