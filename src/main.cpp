@@ -1,5 +1,8 @@
 #include <Arduino.h>
-//#include <NeoPixelBus.h>
+#include <Adafruit_NeoPixel.h>
+#ifdef __AVR__
+  #include <avr/power.h>
+#endif
 
 #include <component.h>
 #include <group.h>
@@ -15,6 +18,9 @@ bool displayPower = 1;
 
 byte arduinoEnablePin = 5;
 uint32_t tArduinoEnable;
+
+// #define PIN 22 LED Pin
+
 
 String x;
 String id;
