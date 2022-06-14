@@ -10,6 +10,7 @@
 #include <page.h>
 #include <touch.h>
 #include <led.h>
+#include <powersaver.h>
 
 
 //int LED_BUILTIN = 2;
@@ -106,22 +107,31 @@ void sleep(bool deepsleep) {
  
 //***************************************** SETUP *****************************************
 void setup() {
+  //********** Serial Setup **********
   Serial.begin(115200);                       //PC
   Serial1.begin(9600, SERIAL_8N1, 18, 19);    //ARDUINO RX TX 
   Serial2.begin(9600, SERIAL_8N1, 16, 17);    //DISPLAY RX TX
   
-  //Arduino-Enable
+  //********** Arduino-Enable **********
   pinMode(LED_BUILTIN,OUTPUT);
   pinMode(arduinoEnablePin,OUTPUT);
   digitalWrite(arduinoEnablePin,1);
   digitalWrite(LED_BUILTIN,1);
   tArduinoEnable = millis();
 
-  //Display-Enable
+  //********** Display-Enable **********
   pinMode(displayPowerPin,OUTPUT);
   digitalWrite(displayPowerPin,1);
 
   delay(100);
+
+  //********** Frequency Adjust **********
+  //setCpuFrequencyMhz(20);
+  Serial.println(getXtalFrequencyMhz());
+  Serial.println(getCpuFrequencyMhz());
+
+  //********** Powersaver **********
+  setModemSleep(); //Deactivate Modem
 
   //********** Sensor Arrays **********
   sAll[0] = &s0;
@@ -238,12 +248,6 @@ void setup() {
   s2.setup("x2", "16", 1, 0, &tArduinoEnable, &arduinoEnablePin);
 
   t1.setup(T9, 30);
-
-
-  //********** Frequency Adjust **********
-  //setCpuFrequencyMhz(20);
-  Serial.println(getXtalFrequencyMhz());
-  Serial.println(getCpuFrequencyMhz());
 }
 
 //***************************************** LOOP *****************************************
