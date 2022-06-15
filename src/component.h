@@ -11,7 +11,8 @@ private:
   bool visible = 0;
   uint32_t* tArduinoEnable;
   byte* arduinoEnablePin;
-  Component* secondComponent;
+  Component* secondCExclusive;
+  Component* secondCDelay;
   bool exclusive;             //If secondComponent is to be disabled if this is enabled
   bool delayed;               //If secondComponent is to be enabled after this is enabled
 
@@ -31,11 +32,15 @@ public:
     arduinoEnablePin = arduinoEnablePinIn;
   }
 
-  //(&component, exclusive, delayed)
-  void setupSecondC(Component* secondCIn, bool exclusiveIn, bool delayedIn) {
-    secondComponent = secondCIn;
-    exclusive = exclusiveIn;
-    delayed = delayedIn;  
+  //(&secondCIn)
+  void setupSecondCExclusive(Component* secondCIn) {
+    secondCExclusive = secondCIn;
+    exclusive = 1;
+  }
+  //(&secondCIn)
+  void setupSecondCDelay(Component* secondCIn) {
+    secondCDelay = secondCIn;
+    delayed = 1;
   }
 
   //Get current State
@@ -66,8 +71,8 @@ public:
     state = stateIn;
 
     if(exclusive && stateIn) { //Exclusive Relay Shudown
-      secondComponent->setState(0);
-      delay(500);
+      secondCExclusive->setState(0);
+      delay(200);
     }
 
     String out = pin;
@@ -84,9 +89,9 @@ public:
     if(delayed) { //Delayed Second Relay
       if(state) {
         delay(500);
-        secondComponent->setState(1);
+        secondCDelay->setState(1);
       } else {
-        secondComponent->setState(0);
+        secondCDelay->setState(0);
       }
     }
 

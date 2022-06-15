@@ -218,7 +218,7 @@ void setup() {
   p1.setVisibility(1);
 
   c1.setup("b100", "010", 0);
-  c2a.setup("b101", "006", 0);
+  c2a.setup("b101", "013", 0);
   c2b.setup("b500", "010", 0);
   c3a.setup("b102", "010", 0);
   c3b.setup("b500", "010", 0);
@@ -234,13 +234,19 @@ void setup() {
   c8c.setup("b113", "010", 0);
   c10.setup("b112", "010", 0);
 
-  c2a.setupSecondC(&c2b, 0, 1);
-  c3a.setupSecondC(&c3b, 0, 1);
-  c9a.setupSecondC(&c9b, 0, 1);
-  c8a.setupSecondC(&c8b, 0, 1);
+  // Delayed
+  c2a.setupSecondCDelay(&c2b);
+  c3a.setupSecondCDelay(&c3b);
+  c8a.setupSecondCDelay(&c8b);
+  c9a.setupSecondCDelay(&c9b);
 
-  c4b.setupSecondC(&c4c, 1, 0);
-  c4c.setupSecondC(&c4b, 1, 0);
+
+  // Exclusive
+  c2a.setupSecondCExclusive(&c3a);
+  c3a.setupSecondCExclusive(&c2a);
+  c4b.setupSecondCExclusive(&c4c);
+  c4c.setupSecondCExclusive(&c4b);
+
 
 
   s0.setup("x0", "14", 1, 0, &tArduinoEnable, &arduinoEnablePin);
