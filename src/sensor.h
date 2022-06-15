@@ -8,10 +8,11 @@ private:
   bool state;
   String id;
   String pin;
-  int data;
+  uint16_t data;
   float factor;
   float offset;
   bool visible;
+  uint32_t tLastUpdate;
   uint32_t* tArduinoEnable;
   byte* arduinoEnablePin;
 
@@ -69,6 +70,8 @@ public:
       Serial.println(dat);
       if(dat>=0 && dat<= 1023) {
         data = dat*factor + offset;
+        displayRefresh();
+        tLastUpdate = millis();
       }
     }
   }
@@ -85,6 +88,14 @@ public:
       Serial.print("disp");
       Serial.println(data);
     }
+  }
+
+  uint16_t getData() {
+    return data;
+  }
+
+  uint32_t getLastUpdate() {
+    return tLastUpdate;
   }
 };
 
