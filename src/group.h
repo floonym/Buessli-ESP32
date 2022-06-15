@@ -124,6 +124,18 @@ public:
       coms[w]->setupArduino(tArduinoEnableInIn,arduinoEnablePinInIn);
     }
   }
+  // Returns true if any Component of Group is active
+  bool activeComp() {
+    uint8_t i = 0;
+    for(int w = 0; w<len; w++) {
+      i = i + coms[w]->getState();
+    }
+    if (i > 0) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
 
   
 };

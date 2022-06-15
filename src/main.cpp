@@ -310,9 +310,11 @@ void loop() {
   */
 
   if (millis()-tArduinoEnable > 5000) {
-    digitalWrite(arduinoEnablePin,0);
-    digitalWrite(LED_BUILTIN,0);
-    //Serial.println("Shutdown Arduino");
+    if (!gall.activeComp()) {
+      digitalWrite(arduinoEnablePin,0);
+      digitalWrite(LED_BUILTIN,0);
+      //Serial.println("Shutdown Arduino");
+    }
   }
   delay(100);
   /*
