@@ -10,6 +10,8 @@
             "includePath": [
                 "/Users/marius/Documents/GitHub/Buessli-ESP32/include",
                 "/Users/marius/Documents/GitHub/Buessli-ESP32/src",
+                "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
+                "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/BluetoothSerial/src",
                 "/Users/marius/Documents/GitHub/Buessli-ESP32/.pio/libdeps/esp32doit-devkit-v1/Adafruit NeoPixel",
                 "/Users/marius/.platformio/packages/framework-arduinoespressif32/tools/sdk/include/config",
                 "/Users/marius/.platformio/packages/framework-arduinoespressif32/tools/sdk/include/app_trace",
@@ -74,7 +76,6 @@
                 "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/AsyncUDP/src",
                 "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/AzureIoT/src",
                 "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/BLE/src",
-                "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/BluetoothSerial/src",
                 "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/DNSServer/src",
                 "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/EEPROM/src",
                 "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/ESP32/src",
@@ -93,10 +94,8 @@
                 "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/Ticker/src",
                 "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
                 "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
-                "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                 "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                 "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
-                "/Users/marius/.platformio/packages/tool-unity",
                 ""
             ],
             "browse": {
@@ -104,6 +103,8 @@
                 "path": [
                     "/Users/marius/Documents/GitHub/Buessli-ESP32/include",
                     "/Users/marius/Documents/GitHub/Buessli-ESP32/src",
+                    "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
+                    "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/BluetoothSerial/src",
                     "/Users/marius/Documents/GitHub/Buessli-ESP32/.pio/libdeps/esp32doit-devkit-v1/Adafruit NeoPixel",
                     "/Users/marius/.platformio/packages/framework-arduinoespressif32/tools/sdk/include/config",
                     "/Users/marius/.platformio/packages/framework-arduinoespressif32/tools/sdk/include/app_trace",
@@ -168,7 +169,6 @@
                     "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/AsyncUDP/src",
                     "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/AzureIoT/src",
                     "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/BLE/src",
-                    "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/BluetoothSerial/src",
                     "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/DNSServer/src",
                     "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/EEPROM/src",
                     "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/ESP32/src",
@@ -187,15 +187,13 @@
                     "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/Ticker/src",
                     "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/Update/src",
                     "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/WebServer/src",
-                    "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                     "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
                     "/Users/marius/.platformio/packages/framework-arduinoespressif32/libraries/Wire/src",
-                    "/Users/marius/.platformio/packages/tool-unity",
                     ""
                 ]
             },
             "defines": [
-                "PLATFORMIO=50203",
+                "PLATFORMIO=60002",
                 "ARDUINO_ESP32_DEV",
                 "ESP32",
                 "ESP_PLATFORM",
