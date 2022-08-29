@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"name": "Esp32 Reset",
+			"path": "../../../marius.moesinger@gmail.com - Google Drive/My Drive/Visual Studio Code/Arduino/Esp32 Reset"
+		},
+		{
+			"name": "Buessli-ESP32",
+			"path": "."
+		},
+		{
+			"name": "Buessli-Arduino",
+			"path": "../Buessli-Arduino"
+		},
+		{
+			"name": "ESP-LED",
+			"path": "../ESP-LED"
+		}
+	],
+	"settings": {}
+}

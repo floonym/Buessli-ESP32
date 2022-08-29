@@ -28,7 +28,12 @@ public:
   }
 
   void setVisibility(bool visIn) {
+    if (!visible && visIn) {
+      visible = visIn;
+      displayRefresh();
+    }
     visible = visIn;
+    
   }
 
   void getValue() {
@@ -38,7 +43,7 @@ public:
     if(millis()-*tArduinoEnable>5000) {
       digitalWrite(*arduinoEnablePin,1);
       digitalWrite(LED_BUILTIN,1);
-      delay(100);
+      delay(500);
     }
     *tArduinoEnable = millis();
     Serial.println(out);

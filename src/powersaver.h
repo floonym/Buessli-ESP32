@@ -9,7 +9,7 @@
 #include "driver/adc.h"
 
 void disableWiFi(){
-    adc_power_off();
+    //adc_power_off();
     WiFi.disconnect(true);  // Disconnect from the network
     WiFi.mode(WIFI_OFF);    // Switch WiFi off
 }
