@@ -49,24 +49,24 @@ Sensor* sP2[0];     //Sensors Page2
 //********** Components **********
 Component c1;    //12-12
 Component c2a;   //12-60
-Component c2b;   //12-60 After
 Component c3a;   //60-12
 Component c3b;   //60-12 After
 Component c4a;   //Charger
-Component c4b;   //Inverter
-Component c4c;   //Bridge
+Component c4b;   //Bridge
+Component c4c;   //Inverter
 Component c5;    //Pump
 Component c6;    //Fridge
-Component c9a;   //USB&Beamer
-Component c9b;   //USB&Beamer After
+Component c7;    //Heizung
 Component c8a;   //LED
 Component c8b;   //LED After
-Component c8c;   //LED Switch
+Component c9a;   //Devices
+Component c9b;   //Devices After
+Component c9c;   //Beamer
 Component c10;   //Audio Switch
 
-Component* cAllVis[12]; //All Components with Buttons
-Component* cAll[16];    //All Components
-Component* cP1[12];     //Components Page1
+Component* cAllVis[13]; //All Components with Buttons
+Component* cAll[15];    //All Components
+Component* cP1[13];     //Components Page1
 Component* cP2[1];      //Components Page2
 
 //********** Groups **********
@@ -198,10 +198,11 @@ void setup() {
   cAllVis[5] = &c4c;
   cAllVis[6] = &c5;
   cAllVis[7] = &c6;
-  cAllVis[8] = &c8a;
-  cAllVis[9] = &c8c;
+  cAllVis[8] = &c7;
+  cAllVis[9] = &c8a;
   cAllVis[10] = &c9a;
-  cAllVis[11] = &c10;
+  cAllVis[11] = &c9c;
+  cAllVis[12] = &c10;
 
   cAll[0] = &c1;
   cAll[1] = &c2a;
@@ -211,14 +212,14 @@ void setup() {
   cAll[5] = &c4c;
   cAll[6] = &c5;
   cAll[7] = &c6;
-  cAll[8] = &c8a;
-  cAll[9] = &c8c;
-  cAll[10] = &c9a;
-  cAll[11] = &c10;
-  cAll[12] = &c2b;
-  cAll[13] = &c3b;
-  cAll[14] = &c9b;
-  cAll[15] = &c8b;
+  cAll[8] = &c7;
+  cAll[9] = &c8a;
+  cAll[10] = &c8b;
+  cAll[11] = &c9a;
+  cAll[12] = &c9b;
+  cAll[13] = &c9c;
+  cAll[14] = &c10;
+  cAll[15] = &c3b;
 
   cP1[0] = &c1;
   cP1[1] = &c2a;
@@ -228,10 +229,11 @@ void setup() {
   cP1[5] = &c4c;
   cP1[6] = &c5;
   cP1[7] = &c6;
-  cP1[8] = &c8a;
-  cP1[9] = &c8c;
+  cP1[8] = &c7;
+  cP1[9] = &c8a;
   cP1[10] = &c9a;
-  cP1[11] = &c10;
+  cP1[11] = &c9c;
+  cP1[12] = &c10;
 
   cP2[0] = &c1;
 
@@ -249,11 +251,11 @@ void setup() {
 
 
   //********** Setups **********
-  p1.setup(1, gP1, 1, cP1, 12, sP1, 3);
+  p1.setup(1, gP1, 1, cP1, 13, sP1, 3);
   p2.setup(2, gP2, 1, cP2, 1, sP2, 0);
 
   gall.setup("b999", 0, cAll, 16);
-  g0.setup("b116", 0, cAllVis, 12);
+  g0.setup("b116", 0, cAllVis, 13);
 
   //p1.setupArduinoEnable(&tArduinoEnable, &arduinoEnablePin);
   //p2.setupArduinoEnable(&tArduinoEnable, &arduinoEnablePin);
@@ -262,25 +264,24 @@ void setup() {
 
   p1.setVisibility(1);
 
-  c1.setup("b100", "010", 0);
-  c2a.setup("b101", "013", 0);
-  c2b.setup("b500", "010", 0);
-  c3a.setup("b102", "010", 0);
-  c3b.setup("b500", "010", 0);
-  c4a.setup("b104", "010", 0);
-  c4b.setup("b105", "010", 0);
-  c4c.setup("b106", "010", 0);
-  c5.setup("b108", "010", 0);
-  c6.setup("b109", "010", 0);
-  c9a.setup("b110", "010", 0);
-  c9b.setup("b500", "010", 0);
-  c8a.setup("b114", "010", 0);
-  c8b.setup("b500", "010", 0);
-  c8c.setup("b113", "010", 0);
-  c10.setup("b112", "010", 0);
+  c1.setup("b100", "003", 0);
+  c2a.setup("b101", "103", 0);
+  c3a.setup("b102", "109", 0);
+  c3b.setup("b500", "106", 0);
+  c4a.setup("b104", "004", 0);
+  c4b.setup("b105", "005", 0);
+  c4c.setup("b106", "006", 0);
+  c5.setup("b108", "009", 0);
+  c6.setup("b109", "008", 0);
+  c7.setup("b109", "007", 0);
+  c8a.setup("b110", "108", 0);
+  c8b.setup("b500", "104", 0);
+  c9a.setup("b114", "107", 0);
+  c9b.setup("b500", "105", 0);
+  c9c.setup("b113", "999", 0);
+  c10.setup("b112", "999", 0);
 
   // Delayed
-  c2a.setupSecondCDelay(&c2b);
   c3a.setupSecondCDelay(&c3b);
   c8a.setupSecondCDelay(&c8b);
   c9a.setupSecondCDelay(&c9b);
@@ -370,7 +371,7 @@ void loop() {
     sleeping(0);
   }
 
-  if (millis() - tSleep > 10000) {
+  if (millis() - tSleep > 20000) {
     Serial.println("tSleep");
     sleeping(0);
   }
