@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
+#include "driver/touch_pad.h"
 #ifdef __AVR__
   #include <avr/power.h>
 #endif
@@ -11,6 +12,7 @@
 #include <touch.h>
 #include <led.h>
 #include <powersaver.h>
+#include <periodic.h>
 
 
 //int LED_BUILTIN = 2;
@@ -20,7 +22,7 @@ bool displayPower = 1;
 byte arduinoEnablePin = 5;
 uint32_t tArduinoEnable;
 
-// #define PIN 22 LED Pin
+uint32_t tSleep;
 
 
 String x;
@@ -33,6 +35,7 @@ byte y;
 uint32_t tD;
 
 byte page;
+Periodic Per;
 
 //********** Sensors **********
 Sensor s0;       //CarBat Voltage
@@ -82,27 +85,66 @@ Page* pAll[2];      //All Pages
 
 //********** Touches **********
 Touch t1;
-#define TOUCH_THRESHOLD 30
+#define TOUCH_THRESHOLD 60
 
 
 void callback() {
 
 }
 
+uint8_t wakeup_reason(){
 
-void sleep(bool deepsleep) {
+  switch(esp_sleep_get_wakeup_cause()){
+    case ESP_SLEEP_WAKEUP_EXT0 : Serial.println("Wakeup caused by external signal using RTC_IO"); return 1; break;
+    case ESP_SLEEP_WAKEUP_EXT1 : Serial.println("Wakeup caused by external signal using RTC_CNTL"); return 2; break;
+    case ESP_SLEEP_WAKEUP_TIMER : Serial.println("Wakeup caused by timer"); return 3; break;
+    case ESP_SLEEP_WAKEUP_TOUCHPAD : Serial.println("Wakeup caused by touchpad"); return 4; break;
+    case ESP_SLEEP_WAKEUP_ULP : Serial.println("Wakeup caused by ULP program"); return 5; break;
+    default : Serial.printf("Wakeup was not caused by deep sleep"); return 6; break;
+  }
+}
+
+
+void sleeping(bool deepsleep) {
     delay(100);
-    digitalWrite(displayPowerPin,0);
-    touchAttachInterrupt(T4, callback, TOUCH_THRESHOLD);
+
+    if (!gall.activeComp()) { //Deactivate Arduinos
+      digitalWrite(arduinoEnablePin,0);
+      digitalWrite(LED_BUILTIN,0);
+      tArduinoEnable = millis() - 10000;
+    }
+
+    digitalWrite(displayPowerPin,0); //Power own Display
+    displayPower = 0;
+
+    touchAttachInterrupt(T9, callback, TOUCH_THRESHOLD); // Setup Sleep
     esp_sleep_enable_touchpad_wakeup();
-    //esp_sleep_enable_timer_wakeup(time_in_us)
+    esp_sleep_enable_timer_wakeup(10000000);
+
+
+    delay(100);
     esp_light_sleep_start();
+
 
     Serial.println("Waking Up");
     touch_pad_intr_disable();
-    digitalWrite(displayPowerPin,1);
-    delay(100);
-    p1.setVisibility(1);
+
+    while (Serial1.available()) { Serial1.read(); } // Clear Serial
+    while (Serial2.available()) { Serial2.read(); }
+
+    tSleep = millis();
+
+    if (wakeup_reason() == 4) { //Touch Startup
+      digitalWrite(displayPowerPin,1);
+      displayPower = 1;
+      delay(100);
+      p1.setVisibility(1);
+      
+    } else { // Periodic Startup
+      Per.refreshData(1);
+    }
+    
+
 }
  
 //***************************************** SETUP *****************************************
@@ -132,6 +174,9 @@ void setup() {
 
   //********** Powersaver **********
   setModemSleep(); //Deactivate Modem
+
+  //********** Periodic **********
+  Per.setup(&c1,&c2a,&c3a,&s0,&s1,&s2);
 
   //********** Sensor Arrays **********
   sAll[0] = &s0;
@@ -253,7 +298,7 @@ void setup() {
   s1.setup("x1", "15", 1, 0, &tArduinoEnable, &arduinoEnablePin);
   s2.setup("x2", "16", 1, 0, &tArduinoEnable, &arduinoEnablePin);
 
-  t1.setup(T9, 30);
+  t1.setup(T9, 60);
 }
 
 //***************************************** LOOP *****************************************
@@ -283,6 +328,7 @@ void loop() {
       }
 
     }
+    tSleep = millis();
   }
   
   while(Serial1.available()) {
@@ -295,19 +341,20 @@ void loop() {
       }
     }
   }
-  /*
+  
   switch (t1.pressed())
   {
   case 1:
-    Serial.println("short press, going to Sleep");
+    Serial.println("short press");
+    sleeping(0);
     break;
   case 2:
-    Serial.println("long press, going to Deepsleep");
+    Serial.println("long press");
     break;
   default:
     break;
   }
-  */
+  
 
   if (millis()-tArduinoEnable > 5000) {
     if (!gall.activeComp()) {
@@ -316,7 +363,20 @@ void loop() {
       //Serial.println("Shutdown Arduino");
     }
   }
+
+  // Back to Sleep if periodic is complete
+  if (Per.automated() && !displayPower) {
+    Serial.println("Per auto");
+    sleeping(0);
+  }
+
+  if (millis() - tSleep > 10000) {
+    Serial.println("tSleep");
+    sleeping(0);
+  }
+
   delay(100);
+
   /*
   if(millis()-tD > 5000) {
     s0.displayRefresh();
