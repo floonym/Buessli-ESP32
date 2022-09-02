@@ -85,6 +85,7 @@ public:
     *tArduinoEnable = millis();
     Serial1.println(out);
     Serial.println(out);
+    delay(100);
 
     if(delayed) { //Delayed Second Relay
       if(state) {
