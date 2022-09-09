@@ -1,35 +1,32 @@
 #ifndef component_h
 #define component_h
 
+#include <Arduino.h>
+#include <expander.h>
+
 
 class  Component
 {
 private:
   bool state;
   String id;
-  String pin;
+  uint8_t pin;
   bool visible = 0;
-  uint32_t* tArduinoEnable;
-  byte* arduinoEnablePin;
   Component* secondCExclusive;
   Component* secondCDelay;
   bool exclusive;             //If secondComponent is to be disabled if this is enabled
   bool delayed;               //If secondComponent is to be enabled after this is enabled
+  Expander* Ex;
 
 
 public:
   //(Pin, State, ID)
-  void setup(String idIn, String pinIn, bool stateIn) {
+  void setup(String idIn, uint8_t pinIn, bool stateIn, Expander* ExIn) {
     id = idIn;
     state = stateIn;
     pin = pinIn;
+    Ex = ExIn;
     setState(state);
-  }
-
-  //(&tArduinoEnable, &arduinoEnablePin)
-  void setupArduino(uint32_t* tArduinoEnableIn, byte* arduinoEnablePinIn) {
-    tArduinoEnable = tArduinoEnableIn;
-    arduinoEnablePin = arduinoEnablePinIn;
   }
 
   //(&secondCIn)
@@ -75,17 +72,11 @@ public:
       delay(200);
     }
 
-    String out = pin;
-    out += state;
-    if(millis()-*tArduinoEnable>5000) { //Waking Arduino if not enabled
-      digitalWrite(*arduinoEnablePin,1);
-      digitalWrite(LED_BUILTIN,1);
-      delay(500);
+    if (Ex->write(pin,state) == 0) {
+      Serial.println("Cant reach Expander, Rebooting");
+      delay(100);
+      ESP.restart();
     }
-    *tArduinoEnable = millis();
-    Serial1.println(out);
-    Serial.println(out);
-    delay(100);
 
     if(delayed) { //Delayed Second Relay
       if(state) {

@@ -61,13 +61,6 @@ public:
       group[w]->buttonRefresh(force);
     }
   }
-
-
-  void setupArduinoEnable(uint32_t* tArduinoEnableInIn, byte* arduinoEnablePinInIn) {
-    for(int w=0; w<clen; w++) {
-      comp[w]->setupArduino(tArduinoEnableInIn,arduinoEnablePinInIn);
-    }
-  }
   
 };
 

@@ -4,6 +4,8 @@
 #ifdef __AVR__
   #include <avr/power.h>
 #endif
+#include <Adafruit_MCP23X17.h>
+#include <Wire.h>
 
 #include <component.h>
 #include <group.h>
@@ -13,29 +15,22 @@
 #include <led.h>
 #include <powersaver.h>
 #include <periodic.h>
+#include <expander.h>
 
 
-//int LED_BUILTIN = 2;
-#define displayPowerPin 13 //13
+
+#define displayPowerPin 4
 bool displayPower = 1;
 
-byte arduinoEnablePin = 5;
-uint32_t tArduinoEnable;
-
 uint32_t tSleep;
-
-
 String x;
-String id;
-char z[10];
 
-bool b;
-
-byte y;
 uint32_t tD;
 
 byte page;
 Periodic Per;
+
+Expander Ex;
 
 //********** Sensors **********
 Sensor s0;       //CarBat Voltage
@@ -109,9 +104,7 @@ void sleeping(bool deepsleep) {
     delay(100);
 
     if (!gall.activeComp()) { //Deactivate Arduinos
-      digitalWrite(arduinoEnablePin,0);
       digitalWrite(LED_BUILTIN,0);
-      tArduinoEnable = millis() - 10000;
     }
 
     digitalWrite(displayPowerPin,0); //Power own Display
@@ -129,7 +122,6 @@ void sleeping(bool deepsleep) {
     Serial.println("Waking Up");
     touch_pad_intr_disable();
 
-    while (Serial1.available()) { Serial1.read(); } // Clear Serial
     while (Serial2.available()) { Serial2.read(); }
 
     tSleep = millis();
@@ -151,15 +143,14 @@ void sleeping(bool deepsleep) {
 void setup() {
   //********** Serial Setup **********
   Serial.begin(115200);                       //PC
-  Serial1.begin(9600, SERIAL_8N1, 18, 19);    //ARDUINO RX TX 
   Serial2.begin(9600, SERIAL_8N1, 16, 17);    //DISPLAY RX TX
+
+  //********** MCP Setup **********
+  Ex.setup();
   
-  //********** Arduino-Enable **********
+  //********** LED_Builtin-Enable **********
   pinMode(LED_BUILTIN,OUTPUT);
-  pinMode(arduinoEnablePin,OUTPUT);
-  digitalWrite(arduinoEnablePin,1);
   digitalWrite(LED_BUILTIN,1);
-  tArduinoEnable = millis();
 
   //********** Display-Enable **********
   pinMode(displayPowerPin,OUTPUT);
@@ -260,26 +251,24 @@ void setup() {
   //p1.setupArduinoEnable(&tArduinoEnable, &arduinoEnablePin);
   //p2.setupArduinoEnable(&tArduinoEnable, &arduinoEnablePin);
 
-  gall.setupArduinoEnable(&tArduinoEnable, &arduinoEnablePin);
-
   p1.setVisibility(1);
 
-  c1.setup("b100", "003", 0);
-  c2a.setup("b101", "103", 0);
-  c3a.setup("b102", "109", 0);
-  c3b.setup("b500", "106", 0);
-  c4a.setup("b104", "004", 0);
-  c4b.setup("b105", "005", 0);
-  c4c.setup("b106", "006", 0);
-  c5.setup("b108", "009", 0);
-  c6.setup("b109", "008", 0);
-  c7.setup("b109", "007", 0);
-  c8a.setup("b110", "108", 0);
-  c8b.setup("b500", "104", 0);
-  c9a.setup("b114", "107", 0);
-  c9b.setup("b500", "105", 0);
-  c9c.setup("b113", "999", 0);
-  c10.setup("b112", "999", 0);
+  c1.setup("b100", 0, 0, &Ex);
+  c2a.setup("b101", 8, 0, &Ex);
+  c3a.setup("b102", 14, 0, &Ex);
+  c3b.setup("b500", 11, 0, &Ex);
+  c4a.setup("b104", 1, 0, &Ex);
+  c4b.setup("b105", 2, 0, &Ex);
+  c4c.setup("b106", 3, 0, &Ex);
+  c5.setup("b108", 6, 0, &Ex);
+  c6.setup("b109", 5, 0, &Ex);
+  c7.setup("b109", 4, 0, &Ex);
+  c8a.setup("b110", 12, 0, &Ex);
+  c8b.setup("b500", 9, 0, &Ex);
+  c9a.setup("b114", 12, 0, &Ex);
+  c9b.setup("b500", 10, 0, &Ex);
+  c9c.setup("b113", 100, 0, &Ex);
+  c10.setup("b112", 100, 0, &Ex);
 
   // Delayed
   c3a.setupSecondCDelay(&c3b);
@@ -295,9 +284,9 @@ void setup() {
 
 
 
-  s0.setup("x0", "14", 1, 0, &tArduinoEnable, &arduinoEnablePin);
-  s1.setup("x1", "15", 1, 0, &tArduinoEnable, &arduinoEnablePin);
-  s2.setup("x2", "16", 1, 0, &tArduinoEnable, &arduinoEnablePin);
+  s0.setup("x0", 36, 1, 0);
+  s1.setup("x1", 39, 1, 0);
+  s2.setup("x2", 34, 1, 0);
 
   t1.setup(T9, 60);
 }
@@ -332,16 +321,6 @@ void loop() {
     tSleep = millis();
   }
   
-  while(Serial1.available()) {
-    x = Serial1.readStringUntil('\n');
-    Serial.println(x);
-
-    if(x.startsWith("v")) {
-      for(int u = 0; u<3; u++) {
-        sAll[u]->checkPinDataLoad(x);
-      }
-    }
-  }
   
   switch (t1.pressed())
   {
@@ -356,14 +335,6 @@ void loop() {
     break;
   }
   
-
-  if (millis()-tArduinoEnable > 5000) {
-    if (!gall.activeComp()) {
-      digitalWrite(arduinoEnablePin,0);
-      digitalWrite(LED_BUILTIN,0);
-      //Serial.println("Shutdown Arduino");
-    }
-  }
 
   // Back to Sleep if periodic is complete
   if (Per.automated() && !displayPower) {

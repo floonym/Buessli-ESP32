@@ -15,7 +15,22 @@
 		{
 			"name": "ESP-LED",
 			"path": "../ESP-LED"
+		},
+		{
+			"name": "Buessli-Extender-Test",
+			"path": "../Buessli-Extender-Test"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.associations": {
+			"*.tcc": "cpp",
+			"functional": "cpp",
+			"random": "cpp",
+			"limits": "cpp",
+			"algorithm": "cpp",
+			"fstream": "cpp",
+			"streambuf": "cpp",
+			"type_traits": "cpp"
+		}
+	}
 }

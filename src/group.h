@@ -119,11 +119,6 @@ public:
     }
   }
 
-  void setupArduinoEnable(uint32_t* tArduinoEnableInIn, byte* arduinoEnablePinInIn) {
-    for(int w=0; w<len; w++) {
-      coms[w]->setupArduino(tArduinoEnableInIn,arduinoEnablePinInIn);
-    }
-  }
   // Returns true if any Component of Group is active
   bool activeComp() {
     uint8_t i = 0;
