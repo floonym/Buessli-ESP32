@@ -56,6 +56,7 @@ public:
       Serial2.write(0xff);
       Serial2.write(0xff);
       Serial2.write(0xff);
+      delay(50);
     }
   }
 

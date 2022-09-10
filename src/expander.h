@@ -75,6 +75,7 @@ public:
 
   uint8_t write(uint8_t pin, bool state){
     uint8_t fail = 0;
+    Serial.println((String)"Pin:"+pin+" State:"+state);
     
     if (pin<16) {
       while (fail++ < 8) {
@@ -99,12 +100,6 @@ public:
     } //failed to set pin
     return 0;
   }
-
-  bool read(uint8_t pin) {
-    delay(100);
-    return 1;
-  }
-  
 };
 
 #endif

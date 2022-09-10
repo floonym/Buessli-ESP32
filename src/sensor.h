@@ -35,10 +35,14 @@ public:
     
   }
 
-  void getValue() {
+  //Update Data and refresh Display
+  uint16_t getValue() {
+    uint16_t dataOld = data;
     data = analogRead(pin)*factor + offset;
-    displayRefresh();
-    tLastUpdate = millis();
+    if (data==dataOld) {
+      displayRefresh();
+    }
+    return data;
   }
 
   //Check if idIn is id of component
@@ -59,8 +63,9 @@ public:
       Serial2.write(0xff);
       Serial2.write(0xff);
       Serial2.write(0xff);
-      Serial.print("disp");
-      Serial.println(data);
+      delay(50);
+
+      Serial.println((String)"disp pin:"+pin+" data"+data);
     }
   }
 
@@ -68,9 +73,6 @@ public:
     return data;
   }
 
-  uint32_t getLastUpdate() {
-    return tLastUpdate;
-  }
 };
 
 #endif

@@ -60,7 +60,7 @@ Component c9c;   //Beamer
 Component c10;   //Audio Switch
 
 Component* cAllVis[13]; //All Components with Buttons
-Component* cAll[15];    //All Components
+Component* cAll[16];    //All Components
 Component* cP1[13];     //Components Page1
 Component* cP2[1];      //Components Page2
 
@@ -98,7 +98,6 @@ uint8_t wakeup_reason(){
     default : Serial.printf("Wakeup was not caused by deep sleep"); return 6; break;
   }
 }
-
 
 void sleeping(bool deepsleep) {
     delay(100);
@@ -144,6 +143,7 @@ void setup() {
   //********** Serial Setup **********
   Serial.begin(115200);                       //PC
   Serial2.begin(9600, SERIAL_8N1, 16, 17);    //DISPLAY RX TX
+  Serial2.setTimeout(100);
 
   //********** MCP Setup **********
   Ex.setup();
@@ -246,7 +246,7 @@ void setup() {
   p2.setup(2, gP2, 1, cP2, 1, sP2, 0);
 
   gall.setup("b999", 0, cAll, 16);
-  g0.setup("b116", 0, cAllVis, 13);
+  g0.setup("b116", 0, cP1, 13);
 
   //p1.setupArduinoEnable(&tArduinoEnable, &arduinoEnablePin);
   //p2.setupArduinoEnable(&tArduinoEnable, &arduinoEnablePin);
@@ -289,6 +289,10 @@ void setup() {
   s2.setup("x2", 34, 1, 0);
 
   t1.setup(T9, 60);
+
+  delay(200);
+
+
 }
 
 //***************************************** LOOP *****************************************
@@ -321,7 +325,7 @@ void loop() {
     tSleep = millis();
   }
   
-  
+  /*
   switch (t1.pressed())
   {
   case 1:
@@ -334,19 +338,19 @@ void loop() {
   default:
     break;
   }
-  
+  */
 
   // Back to Sleep if periodic is complete
   if (Per.automated() && !displayPower) {
     Serial.println("Per auto");
     sleeping(0);
   }
-
+  /*
   if (millis() - tSleep > 20000) {
     Serial.println("tSleep");
     sleeping(0);
   }
-
+  */
   delay(100);
 
   /*

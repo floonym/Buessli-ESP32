@@ -55,6 +55,7 @@ public:
       Serial2.write(0xff);
       Serial2.write(0xff);
       Serial2.write(0xff);
+      delay(50);
     }
   }
 
@@ -63,8 +64,13 @@ public:
     displayRefresh();
   }
 
+  bool getVisibility() {
+    return visible;
+  }
+
   //Sets State
   void setState(bool stateIn) {
+    bool stateOld = state;
     state = stateIn;
 
     if(exclusive && stateIn) { //Exclusive Relay Shudown
@@ -86,14 +92,18 @@ public:
         secondCDelay->setState(0);
       }
     }
+    
+    Serial.println((String)"StateOld:"+stateOld+" State:"+state);
 
-    displayRefresh();
+    if (stateOld!=state) {
+      displayRefresh();
+    }
+
   }
 
   //Switches State and sets it
-  void switchState() {
-    state = !state;
-    setState(state);
+  void switchState() {;
+    setState(!state);
   }
   
   //Check if idIn is id of component
@@ -113,6 +123,10 @@ public:
     } else {
       return 0;
     }
+  }
+
+  String getID() {
+    return id;
   }
 
 

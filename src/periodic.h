@@ -35,10 +35,9 @@ public:
     // Gets new Voltage Data from Sensors
     void refreshData(bool force) {
         if (refreshEnabled || force) {
-            if (millis() - tRefresh1 > 60000 || force) {
+            if (millis() - tRefresh1 > 6000 || force) {
                 s12V->getValue();
                 sAuto->getValue();
-                
                 s60V->getValue();
                 tRefresh1 = millis();
             }
@@ -58,23 +57,21 @@ public:
     // Turns on and off c1 when driving automatically
     bool automated() {
         refreshData(0);
-        if (millis() - sAuto->getLastUpdate() < 5000) {
-            if (sAuto->getData() > 0) {
-                if (c1->getState()) {
-                    if (sAuto->getData() < 130 && c1self) {
-                        c1->setState(0);
-                        c1self = 0;
-                    }
-                } else {
-                    if (sAuto->getData() > 130) {
-                        c1->setState(1);
-                        c1self = 1;
-                    } else {
-                        c1self = 0;
-                    }
+        if (sAuto->getData() > 0) {
+            if (c1->getState()) {
+                if (sAuto->getData() < 130 && c1self) {
+                    c1->setState(0);
+                    c1self = 0;
                 }
-                return 1;
+            } else {
+                if (sAuto->getData() > 130) {
+                    c1->setState(1);
+                    c1self = 1;
+                } else {
+                    c1self = 0;
+                }
             }
+            return 1;
         }
         return 0;
     }
