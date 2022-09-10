@@ -55,7 +55,7 @@ public:
       Serial2.write(0xff);
       Serial2.write(0xff);
 
-      Serial.print((String)"Comp-Disp ID:"+id+" State:"+state);
+      Serial.println((String)"Comp-Disp ID:"+id+" State:"+state);
 
       delay(50);
     }

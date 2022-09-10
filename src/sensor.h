@@ -61,7 +61,7 @@ public:
       Serial2.write(0xff);
       Serial2.write(0xff);
 
-      Serial.print((String)"Sens-Disp Pin:"+pin+" Data:"+data);
+      Serial.println((String)"Sens-Disp Pin:"+pin+" Data:"+data);
 
       delay(50);
     }
