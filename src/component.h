@@ -23,10 +23,9 @@ public:
   //(Pin, State, ID)
   void setup(String idIn, uint8_t pinIn, bool stateIn, Expander* ExIn) {
     id = idIn;
-    state = stateIn;
     pin = pinIn;
     Ex = ExIn;
-    setState(state);
+    setState(stateIn);
   }
 
   //(&secondCIn)
@@ -92,8 +91,6 @@ public:
         secondCDelay->setState(0);
       }
     }
-    
-    Serial.println((String)"StateOld:"+stateOld+" State:"+state);
 
     if (stateOld!=state) {
       displayRefresh();

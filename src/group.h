@@ -24,6 +24,7 @@ public:
     }
   }
 
+  //Refresh state and return
   byte actualState() {
     int count = 0;
     for (int i = 0; i<len; i++) {
@@ -37,12 +38,12 @@ public:
       return 2;
     }
   }
-  
+
+  // Refresh state and save and return
   byte getState() {
     state = actualState();
     return state;
   }
-
 
   void buttonRefresh(bool force) {
     getState();

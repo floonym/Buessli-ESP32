@@ -7,17 +7,16 @@
 class  Sensor
 {
 private:
-  bool state;
   String id;
   uint8_t pin;
   uint16_t data;
+  uint16_t dataDisp;
   float factor;
   float offset;
   bool visible;
-  uint32_t tLastUpdate;
 
 public:
-  //(ID, State, Factor, Offset)
+  //(ID, Pin, Factor, Offset)
   void setup(String idIn, uint8_t pinIn, float factorIn, float offsetIn) {
     id = idIn;
     pin = pinIn;
@@ -29,7 +28,7 @@ public:
   void setVisibility(bool visIn) {
     if (!visible && visIn) {
       visible = visIn;
-      displayRefresh();
+      displayRefresh(1);
     }
     visible = visIn;
     
@@ -37,11 +36,8 @@ public:
 
   //Update Data and refresh Display
   uint16_t getValue() {
-    uint16_t dataOld = data;
     data = analogRead(pin)*factor + offset;
-    if (data==dataOld) {
-      displayRefresh();
-    }
+    displayRefresh(0);
     return data;
   }
 
@@ -55,11 +51,12 @@ public:
   }
 
   //Refreshes Display State
-  void displayRefresh() {
-    if(visible) {
+  void displayRefresh(bool force) {
+    if((dataDisp!=data || force) && visible) {
+      dataDisp = data;
       Serial2.print(id);
       Serial2.print(".val=");
-      Serial2.print(data);
+      Serial2.print(dataDisp);
       Serial2.write(0xff);
       Serial2.write(0xff);
       Serial2.write(0xff);
