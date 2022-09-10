@@ -299,7 +299,7 @@ void setup() {
 void loop() {
   while(Serial2.available()){
     x = Serial2.readStringUntil('x');
-    Serial.println((String)"From Display: "+x);
+    Serial.println((String)"\nFrom Display: "+x);
 
     if (x.startsWith("b")) {
       //Check for ComponentButton press

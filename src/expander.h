@@ -75,7 +75,7 @@ public:
 
   uint8_t write(uint8_t pin, bool state){
     uint8_t fail = 0;
-    Serial.println((String)"Pin:"+pin+" State:"+state);
+    Serial.println((String)"Exp-Write Pin:"+pin+" State:"+state);
     
     if (pin<16) {
       while (fail++ < 8) {

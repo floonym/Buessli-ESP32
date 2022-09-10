@@ -110,8 +110,6 @@ public:
   void checkIdSwitch(String* idIn) {
     if(checkId(idIn)){
       switchState();
-      Serial.print("GROUPSw  ");
-      Serial.println(id);
     }
 
   }
@@ -119,8 +117,6 @@ public:
   void checkIdSet(String* idIn, bool stateIn) {
     if(checkId(idIn)){
       setState(stateIn);
-      Serial.print("GROUPSe  ");
-      Serial.println(id);
     }
   }
 
