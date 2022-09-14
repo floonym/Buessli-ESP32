@@ -144,7 +144,7 @@ void sleeping(bool deepsleep) {
 void setup() {
   //********** Serial Setup **********
   Serial.begin(115200);                       //PC
-  Serial2.begin(9600, SERIAL_8N1, 16, 17);    //DISPLAY RX TX
+  Serial2.begin(115200, SERIAL_8N1, 16, 17);    //DISPLAY RX TX
   Serial2.setTimeout(100);
 
   //********** MCP Setup **********
