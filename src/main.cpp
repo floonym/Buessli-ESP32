@@ -42,34 +42,36 @@ Sensor* sP1[3];     //Sensors Page1
 Sensor* sP2[0];     //Sensors Page2
 
 //********** Components **********
-Component c1;    //12-12
-Component c2a;   //12-60
-Component c3a;   //60-12
-Component c3b;   //60-12 After
-Component c4a;   //Charger
-Component c4b;   //Bridge
+Component c1;    //Auto-12V
+Component c2a;   //12->60
+Component c3a;   //60->12 1
+Component c3b;   //60->12 2
+Component c4a;   //230->60
+Component c4b;   //230 Bridge
 Component c4c;   //Inverter
-Component c5;    //Pump
-Component c6;    //Fridge
+Component c5;    //Pumpe
+Component c6;    //Kühlbox
 Component c7;    //Heizung
-Component c8a;   //LED
-Component c8b;   //LED After
-Component c9a;   //Devices
-Component c9b;   //Devices After
+Component c8a;   //LED 1
+Component c8b;   //LED 2
+Component c9a;   //USB 1
+Component c9b;   //USB 2
 Component c9c;   //Beamer
-Component c10;   //Audio Switch
+Component c10;   //LED Signal
 
-Component* cAllVis[13]; //All Components with Buttons
+Component* cVis[13]; //All Components with Buttons
+Component* cBeamer[2];  //Beamer Group
 Component* cAll[16];    //All Components
 Component* cP1[13];     //Components Page1
 Component* cP2[1];      //Components Page2
 
 //********** Groups **********
-Group g0;           //All Shutoff
+Group gvis;         //All Shutoff
 Group gall;         //All Components
+Group gbeamer;      //beamer
 
-Group* gAll[1];     //All Groups
-Group* gP1[1];      //Groups Page1  
+Group* gAll[2];     //All Groups
+Group* gP1[2];      //Groups Page1  
 Group* gP2[1];      //Groups Page2
 
 //********** Pages **********
@@ -181,19 +183,22 @@ void setup() {
   //sP2[0] = &s0;
   
   //********** Component Arrays **********
-  cAllVis[0] = &c1;
-  cAllVis[1] = &c2a;
-  cAllVis[2] = &c3a;
-  cAllVis[3] = &c4a;
-  cAllVis[4] = &c4b;
-  cAllVis[5] = &c4c;
-  cAllVis[6] = &c5;
-  cAllVis[7] = &c6;
-  cAllVis[8] = &c7;
-  cAllVis[9] = &c8a;
-  cAllVis[10] = &c9a;
-  cAllVis[11] = &c9c;
-  cAllVis[12] = &c10;
+  cVis[0] = &c1;
+  cVis[1] = &c2a;
+  cVis[2] = &c3a;
+  cVis[3] = &c4a;
+  cVis[4] = &c4b;
+  cVis[5] = &c4c;
+  cVis[6] = &c5;
+  cVis[7] = &c6;
+  cVis[8] = &c7;
+  cVis[9] = &c8a;
+  cVis[10] = &c9a;
+  cVis[11] = &c9c;
+  cVis[12] = &c10;
+  
+  cBeamer[0] = &c9a;
+  cBeamer[1] = &c9c;
 
   cAll[0] = &c1;
   cAll[1] = &c2a;
@@ -229,9 +234,11 @@ void setup() {
   cP2[0] = &c1;
 
   //********** Group Arrays **********
-  gAll[0] = &g0;
+  gAll[0] = &gvis;
+  gAll[1] = &gbeamer;
 
-  gP1[0] = &g0;
+  gP1[0] = &gvis;
+  gP1[1] = &gbeamer;
 
   gP2[0] = &g0;
 
@@ -242,33 +249,33 @@ void setup() {
 
 
   //********** Setups **********
-  p1.setup(1, gP1, 1, cP1, 13, sP1, 3);
-  p2.setup(2, gP2, 1, cP2, 1, sP2, 0);
+  p1.setup(1, gP1, 2, cP1, 13, sP1, 3);
+  p2.setup(2, gP2, 0, cP2, 0, sP2, 0);
 
-  gall.setup("b999", 0, cAll, 16);
-  g0.setup("b116", 0, cP1, 13);
+  gvis.setup("b103", 0, cVis, 13);
+  gbeamer.setup("b115", 0, cBeamer, 2);
 
   //p1.setupArduinoEnable(&tArduinoEnable, &arduinoEnablePin);
   //p2.setupArduinoEnable(&tArduinoEnable, &arduinoEnablePin);
 
   p1.setVisibility(1);
 
-  c1.setup("b100", 0, 0, &Ex);
-  c2a.setup("b101", 8, 0, &Ex);
-  c3a.setup("b102", 14, 0, &Ex);
-  c3b.setup("b500", 11, 0, &Ex);
-  c4a.setup("b104", 1, 0, &Ex);
-  c4b.setup("b105", 2, 0, &Ex);
-  c4c.setup("b106", 3, 0, &Ex);
-  c5.setup("b108", 6, 0, &Ex);
-  c6.setup("b109", 5, 0, &Ex);
-  c7.setup("b109", 4, 0, &Ex);
-  c8a.setup("b110", 12, 0, &Ex);
-  c8b.setup("b500", 9, 0, &Ex);
-  c9a.setup("b114", 12, 0, &Ex);
-  c9b.setup("b500", 10, 0, &Ex);
-  c9c.setup("b113", 100, 0, &Ex);
-  c10.setup("b112", 100, 0, &Ex);
+  c1.setup("b100", 0, 0, &Ex);   //Auto-12V
+  c2a.setup("b101", 8, 0, &Ex);  //12->60
+  c3a.setup("b102", 14, 0, &Ex); //60->12 1
+  c3b.setup("b500", 11, 0, &Ex); //60->12 2
+  c4a.setup("b104", 1, 0, &Ex);  //230->60
+  c4b.setup("b105", 2, 0, &Ex);  //230 Bridge
+  c4c.setup("b106", 3, 0, &Ex);  //Inverter
+  c5.setup("b108", 6, 0, &Ex);   //Pumpe
+  c6.setup("b109", 5, 0, &Ex);   //Kühlbox
+  c7.setup("b500", 4, 0, &Ex);   //Heizung
+  c8a.setup("b110", 12, 0, &Ex); //LED 1
+  c8b.setup("b500", 9, 0, &Ex);  //LED 2
+  c9a.setup("b112", 12, 0, &Ex); //USB 1
+  c9b.setup("b500", 10, 0, &Ex); //USB 2
+  c9c.setup("b113", 100, 0, &Ex);//Beamer
+  c10.setup("b114", 100, 0, &Ex);//LED Signal
 
   // Delayed
   c3a.setupSecondCDelay(&c3b);
@@ -307,7 +314,8 @@ void loop() {
       p2.checkIdSwitch(&x);
       
       //Check for GroupButton press
-      g0.checkIdSet(&x, 0); //All off
+      gvis.checkIdSet(&x, 0); //All off
+      gbeamer.checkIdSwitch(&x); //Beamer Switch
 
       //Refresh GroupButtons if needed
       p1.groupButtonRefresh(0);
