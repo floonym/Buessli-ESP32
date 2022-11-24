@@ -240,7 +240,7 @@ void setup() {
   gP1[0] = &gvis;
   gP1[1] = &gbeamer;
 
-  gP2[0] = &g0;
+  gP2[0] = &gvis;
 
 
   //********** Page Arrays **********
